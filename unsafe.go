@@ -6,7 +6,7 @@ import (
 )
 
 //go:linkname Is errors.Is
-func Is(err, target error)
+func Is(err, target error) bool
 
 //go:linkname As errors.Is
-func As(err, target error)
+func As(err error, target interface{}) bool
