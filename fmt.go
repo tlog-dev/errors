@@ -30,15 +30,17 @@ func (e wrapper) Format(s fmt.State, c rune) {
 		return
 	}
 
+	if e.msg == "" {
+		e.msg = "(no message)"
+	}
+
 	if s.Flag(' ') {
 		_, file, line := e.loc.NameFileLine()
 		switch {
 		case e.err == nil:
-			fmt.Fprintf(s, "%s\nat %v:%d", e.msg, file, line)
-		case e.msg == "":
-			fmt.Fprintf(s, "at %v:%d\n% +v", file, line, e.err)
+			fmt.Fprintf(s, "%s at %v:%d", e.msg, file, line)
 		default:
-			fmt.Fprintf(s, "%s\nat %v:%d\n% +v", e.msg, file, line, e.err)
+			fmt.Fprintf(s, "%s at %v:%d\n% +v", e.msg, file, line, e.err)
 		}
 		return
 	}

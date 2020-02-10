@@ -68,6 +68,9 @@ func (e wrapper) Unwrap() error {
 
 func (e wrapper) Error() string {
 	if e.err == nil {
+		if e.msg == "" {
+			return "(no message)"
+		}
 		return e.msg
 	}
 	if e.msg == "" {
