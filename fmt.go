@@ -2,6 +2,9 @@ package errors
 
 import "fmt"
 
+// Format formats error message and adds location if present.
+//
+// fmt.Formatter interface implementation.
 func (e wrapper) Format(s fmt.State, c rune) {
 	if !s.Flag('+') {
 		_, _ = s.Write([]byte(e.Error()))
@@ -31,7 +34,7 @@ func (e wrapper) Format(s fmt.State, c rune) {
 	}
 
 	if e.msg == "" {
-		e.msg = "(no message)"
+		e.msg = nomessage
 	}
 
 	if s.Flag(' ') {
