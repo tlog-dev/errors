@@ -8,6 +8,7 @@ import (
 )
 
 type (
+	// Location represents location in a source code.
 	Location = tlog.Location
 
 	wrapper struct {
@@ -56,7 +57,7 @@ func NewLoc(loc Location, f string, args ...interface{}) error {
 	}
 }
 
-// New returns an error that describes given error with given text.
+// Wrap returns an error that describes given error with given text.
 // Returns nil if err is nil.
 func Wrap(err error, f string, args ...interface{}) error {
 	if err == nil {
