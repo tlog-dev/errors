@@ -16,12 +16,9 @@ func TestWrapperError(t *testing.T) {
 	assert.EqualError(t, Unwrap(Wrap(New("qwe %v %v", 1, 2), "context")), "qwe 1 2")
 }
 
-func TestIsUnwrap(t *testing.T) {
+func TestUnwrap(t *testing.T) {
 	mid := Wrap(os.ErrNotExist, "middle")
 	err := Wrap(mid, "global")
-
-	assert.True(t, Is(mid, os.ErrNotExist))
-	assert.True(t, Is(err, os.ErrNotExist))
 
 	e := Unwrap(mid)
 	assert.True(t, e == os.ErrNotExist, e)
