@@ -11,92 +11,68 @@ type (
 	Location = tlog.Location
 
 	wrapper struct {
-		orig error
-		msg  string
-		loc  Location
-	}
-
-	causer interface {
-		Cause() error
+		err error
+		msg string
+		loc Location
 	}
 )
 
-func (e *wrapper) Error() string {
-	if e.orig == nil {
+func (e wrapper) Error() string {
+	if e.err == nil {
 		return e.msg
 	}
 	if e.msg == "" {
-		return e.orig.Error()
+		return e.err.Error()
 	}
-	return e.msg + ": " + e.orig.Error()
+	return e.msg + ": " + e.err.Error()
 }
 
-func New(msg string) *wrapper {
-	return &wrapper{
-		msg: msg,
-		loc: Caller(1),
-	}
-}
-
-func Newf(f string, args ...interface{}) error {
-	return &wrapper{
+func New(f string, args ...interface{}) error {
+	return wrapper{
 		msg: fmt.Sprintf(f, args...),
 		loc: Caller(1),
 	}
 }
 
-func Wrap(err error, msg string) error {
-	if err == nil {
-		return nil
-	}
-	return &wrapper{
-		orig: err,
-		msg:  msg,
-		loc:  Caller(1),
+func NewNoLoc(f string, args ...interface{}) error {
+	return wrapper{
+		msg: fmt.Sprintf(f, args...),
 	}
 }
 
-func Wrapf(err error, f string, args ...interface{}) error {
+func Wrap(err error, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
-	return &wrapper{
-		orig: err,
-		msg:  fmt.Sprintf(f, args...),
-		loc:  Caller(1),
+	return wrapper{
+		err: err,
+		msg: fmt.Sprintf(f, args...),
+		loc: Caller(1),
 	}
 }
 
-func WrapfNoLoc(err error, f string, args ...interface{}) error {
+func WrapNoLoc(err error, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
-	return &wrapper{
-		orig: err,
-		msg:  fmt.Sprintf(f, args...),
+	return wrapper{
+		err: err,
+		msg: fmt.Sprintf(f, args...),
 	}
 }
 
-func Cause(err error) error {
-	for err != nil {
-		switch e := err.(type) {
-		case *wrapper:
-			if e.orig == nil {
-				return err
-			}
-			err = e.orig
-		case causer:
-			err = e.Cause()
-		default:
-			return err
-		}
+func Unwrap(err error) error {
+	switch e := err.(type) {
+	case wrapper:
+		return e.err
+	case interface{ Unwrap() error }:
+		return e.Unwrap()
+	default:
+		return nil
 	}
-	return nil
 }
 
 // Caller returns information about the calling goroutine's stack. The argument s is the number of frames to ascend, with 0 identifying the caller of Caller.
-//
-// It's hacked version of runtime.Caller with no allocs.
 func Caller(s int) Location {
 	var pc [1]uintptr
 	runtime.Callers(2+s, pc[:])
@@ -104,8 +80,6 @@ func Caller(s int) Location {
 }
 
 // Funcentry returns information about the calling goroutine's stack. The argument s is the number of frames to ascend, with 0 identifying the caller of Caller.
-//
-// It's hacked version of runtime.Callers -> runtime.CallersFrames -> Frames.Next -> Frame.Entry with no allocs.
 func Funcentry(s int) Location {
 	var pc [1]uintptr
 	runtime.Callers(2+s, pc[:])
