@@ -62,6 +62,7 @@ func Wrap(err error, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
+
 	return wrapper{
 		err: err,
 		msg: fmt.Sprintf(f, args...),
@@ -75,6 +76,7 @@ func WrapHere(err error, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
+
 	return wrapper{
 		err: err,
 		msg: fmt.Sprintf(f, args...),
@@ -89,6 +91,7 @@ func WrapDepth(d int, err error, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
+
 	return wrapper{
 		err: err,
 		msg: fmt.Sprintf(f, args...),
@@ -102,6 +105,7 @@ func WrapLoc(loc Location, err error, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
+
 	return wrapper{
 		err: err,
 		msg: fmt.Sprintf(f, args...),
@@ -131,9 +135,11 @@ func (e wrapper) Error() string {
 		}
 		return e.msg
 	}
+
 	if e.msg == "" {
 		return e.err.Error()
 	}
+
 	return e.msg + ": " + e.err.Error()
 }
 

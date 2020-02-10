@@ -37,23 +37,25 @@ func (e wrapper) Format(s fmt.State, c rune) {
 		e.msg = nomessage
 	}
 
-	if s.Flag(' ') {
-		_, file, line := e.loc.NameFileLine()
+	if !s.Flag(' ') {
 		switch {
 		case e.err == nil:
-			fmt.Fprintf(s, "%s at %v:%d", e.msg, file, line)
+			fmt.Fprintf(s, "%s (%v)", e.msg, e.loc)
+		case e.msg == "":
+			fmt.Fprintf(s, "(%v): %+v", e.loc, e.err)
 		default:
-			fmt.Fprintf(s, "%s at %v:%d\n% +v", e.msg, file, line, e.err)
+			fmt.Fprintf(s, "%s (%v): %+v", e.msg, e.loc, e.err)
 		}
+
 		return
 	}
 
+	_, file, line := e.loc.NameFileLine()
+
 	switch {
 	case e.err == nil:
-		fmt.Fprintf(s, "%s (%v)", e.msg, e.loc)
-	case e.msg == "":
-		fmt.Fprintf(s, "(%v): %+v", e.loc, e.err)
+		fmt.Fprintf(s, "%s at %v:%d", e.msg, file, line)
 	default:
-		fmt.Fprintf(s, "%s (%v): %+v", e.msg, e.loc, e.err)
+		fmt.Fprintf(s, "%s at %v:%d\n% +v", e.msg, file, line, e.err)
 	}
 }
