@@ -88,7 +88,7 @@ func WrapHere(err error, f string, args ...interface{}) error {
 // WrapDepth returns an error that describes given error with given text.
 // Location where error was created (d frames higher) is recorded.
 // Returns nil if err is nil.
-func WrapDepth(d int, err error, f string, args ...interface{}) error {
+func WrapDepth(err error, d int, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
@@ -102,7 +102,7 @@ func WrapDepth(d int, err error, f string, args ...interface{}) error {
 
 // WrapLoc returns an error with given Location that describes given error with given text.
 // Returns nil if err is nil.
-func WrapLoc(loc Location, err error, f string, args ...interface{}) error {
+func WrapLoc(err error, loc Location, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}

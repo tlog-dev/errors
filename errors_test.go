@@ -7,6 +7,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type testWrapper struct {
+	err error
+}
+
 func TestWrapperError(t *testing.T) {
 	assert.EqualError(t, New("qwe"), "qwe")
 	assert.EqualError(t, NewHere("qwe %v %v", 1, 2), "qwe 1 2")
@@ -20,9 +24,24 @@ func TestUnwrap(t *testing.T) {
 	mid := Wrap(os.ErrNotExist, "middle")
 	err := Wrap(mid, "global")
 
-	e := Unwrap(mid)
-	assert.True(t, e == os.ErrNotExist, e)
+	assert.True(t, os.ErrNotExist == Unwrap(mid))
 
-	e = Unwrap(err)
-	assert.True(t, e == mid, e)
+	assert.True(t, mid == Unwrap(err))
+
+	assert.True(t, mid == Unwrap(testWrapper{mid}))
+
+	assert.Nil(t, Unwrap(os.ErrNotExist))
 }
+
+func TestWrapNil(t *testing.T) {
+	var err error
+
+	assert.Nil(t, Wrap(err, "qwe"))
+	assert.Nil(t, WrapHere(err, "qwe"))
+	assert.Nil(t, WrapDepth(err, 0, "qwe"))
+	assert.Nil(t, WrapLoc(err, Funcentry(0), "qwe"))
+}
+
+func (w testWrapper) Error() string { return "none" }
+
+func (w testWrapper) Unwrap() error { return w.err }
