@@ -10,6 +10,40 @@
 
 Stdlib `errors` package extension. `go1.13` `errors.Is` and `errors.As` are the same functions as in stdlib (not even copies).
 
-## Location
+```go
+// as usual
+err = errors.New("msg")
 
-Location can be added to error so later you can get to know where error was generated.
+// fmt.Sprintf like
+err = errors.New("message %v", "args")
+
+// add Frame info
+err = errors.NewHere("msg")
+
+// one Frame higher
+err = errors.NewDepth(1, "msg")
+
+// the same result as previous
+f := errors.Caller(1)
+err = errors.NewFrame(f, "msg")
+
+// Wrap error
+err = errors.Wrap(err, "msg %v", "args")
+
+// all the same function types are available
+err = errors.WrapHere(err, "msg %v", "args")
+
+err = errors.WrapDepth(err, 1, "msg %v", "args")
+
+err = errors.WrapFrame(err, f, "msg %v", "args")
+```
+
+## Caller
+
+Caller frame can be added to error so later you can get to know where error was generated.
+
+```go
+f := errors.Caller(1)
+
+f = errors.Funcentry(1)
+```

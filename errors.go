@@ -48,9 +48,9 @@ func NewDepth(d int, f string, args ...interface{}) error {
 	}
 }
 
-// NewLoc returns an error with given Frame that formats as the given text.
+// NewFrame returns an error with given Frame that formats as the given text.
 // Each call to New returns a distinct error value even if the text is identical.
-func NewLoc(frame Frame, f string, args ...interface{}) error {
+func NewFrame(frame Frame, f string, args ...interface{}) error {
 	return wrapper{
 		msg:   fmt.Sprintf(f, args...),
 		frame: frame,
@@ -100,9 +100,9 @@ func WrapDepth(err error, d int, f string, args ...interface{}) error {
 	}
 }
 
-// WrapLoc returns an error with given Frame that describes given error with given text.
+// WrapFrame returns an error with given Frame that describes given error with given text.
 // Returns nil if err is nil.
-func WrapLoc(err error, frame Frame, f string, args ...interface{}) error {
+func WrapFrame(err error, frame Frame, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
