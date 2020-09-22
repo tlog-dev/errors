@@ -1,8 +1,8 @@
 version: 2
 jobs:
-  go1.13: &base
+  go1.15: &base
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.15
     working_directory: /go/wd
     steps:
       - run: go version
@@ -11,16 +11,20 @@ jobs:
 
       - run: go test -race -v ./...
 
-  go1.12:
+  go1.14:
     <<: *base
     docker:
-      - image: circleci/golang:1.12
-    environment:
-      - GO111MODULE=on
+      - image: circleci/golang:1.14
+
+  go1.13:
+    <<: *base
+    docker:
+      - image: circleci/golang:1.13
 
 workflows:
   version: 2
   build:
     jobs:
-      - go1.12
+      - go1.15
+      - go1.14
       - go1.13

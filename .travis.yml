@@ -13,13 +13,14 @@ arch:
   - amd64
 
 go:
+  - "1.15"
+  - "1.14"
   - "1.13"
-  - "1.12"
 
 jobs:
   include:
     - os: linux
-      go: "1.13"
+      go: "1.15"
       arch: arm64
 
 script:

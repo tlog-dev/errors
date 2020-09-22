@@ -1,4 +1,4 @@
-[![Documentation](https://godoc.org/github.com/nikandfor/errors?status.svg)](https://pkg.go.dev/github.com/nikandfor/errors?tab=doc)
+[![Documentation](https://pkg.go.dev/badge/github.com/nikandfor/errors)](https://pkg.go.dev/github.com/nikandfor/errors?tab=doc)
 [![Build Status](https://travis-ci.com/nikandfor/errors.svg?branch=master)](https://travis-ci.com/nikandfor/errors)
 [![CircleCI](https://circleci.com/gh/nikandfor/errors.svg?style=svg)](https://circleci.com/gh/nikandfor/errors)
 [![codecov](https://codecov.io/gh/nikandfor/errors/branch/master/graph/badge.svg)](https://codecov.io/gh/nikandfor/errors)

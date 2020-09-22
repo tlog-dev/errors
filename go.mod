@@ -1,6 +1,6 @@
 module github.com/nikandfor/errors
 
-go 1.12
+go 1.13
 
 require (
 	github.com/nikandfor/tlog v0.7.0
