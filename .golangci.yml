@@ -5,7 +5,7 @@ linters-settings:
     check-shadowing: false
   golint:
     min-confidence: 0
-  gocyclo:
+  gocognit:
     min-complexity: 20
   maligned:
     suggest-new: true
@@ -13,7 +13,7 @@ linters-settings:
     threshold: 100
   goconst:
     min-len: 2
-    min-occurrences: 2
+    min-occurrences: 3
   depguard:
     list-type: whitelist
     packages:
@@ -21,7 +21,6 @@ linters-settings:
       - github.com/nikandfor/tlog
       - github.com/pkg/errors
   misspell:
-    locale: US
   lll:
     line-length: 170
   goimports:
@@ -31,18 +30,25 @@ linters-settings:
     for-loops: true
   gocritic:
     enabled-tags:
+      - experimental
       - performance
       - style
-      - experimental
     disabled-checks:
-      - unnamedResult
+      - appendAssign
       - builtinShadow
       - commentedOutCode
+      - unnamedResult
+      - whyNoLint
+      - yodaStyleExpr
 
 linters:
   enable-all: true
   disable:
-    - unparam
-    - nakedret
-    - gochecknoinits
     - gochecknoglobals
+    - gochecknoinits
+    - gomnd
+    - nakedret
+    - nlreturn
+    - testpackage
+    - unparam
+    - wsl

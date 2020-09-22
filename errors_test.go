@@ -20,6 +20,7 @@ func TestWrapperError(t *testing.T) {
 	assert.EqualError(t, Unwrap(Wrap(New("qwe %v %v", 1, 2), "context")), "qwe 1 2")
 }
 
+//nolint:goerr113
 func TestUnwrap(t *testing.T) {
 	mid := Wrap(os.ErrNotExist, "middle")
 	err := Wrap(mid, "global")

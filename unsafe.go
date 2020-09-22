@@ -1,7 +1,9 @@
 // +build go1.13
 
+//nolint:godot
 package errors
 
+//nolint:gci
 import (
 	_ "errors" // for go:linkname
 	_ "unsafe" // for go:linkname

@@ -165,5 +165,5 @@ func Caller(s int) Frame {
 func Funcentry(s int) Frame {
 	var pc [1]uintptr
 	runtime.Callers(2+s, pc[:])
-	return Frame(Frame(pc[0]).Entry())
+	return Frame(pc[0]).Entry()
 }
