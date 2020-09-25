@@ -8,13 +8,13 @@ import (
 )
 
 type (
-	// Frame represents location in a source code.
-	Frame = tlog.Frame
+	// PC is a program counter and represents location in a source code.
+	PC = tlog.PC
 
 	wrapper struct {
-		err   error
-		msg   string
-		frame Frame
+		err error
+		msg string
+		pc  PC
 	}
 )
 
@@ -29,31 +29,31 @@ func New(f string, args ...interface{}) error {
 }
 
 // NewHere returns an error that formats as the given text.
-// Frame where error was created is recorded.
+// Location where error was created is recorded.
 // Each call to New returns a distinct error value even if the text is identical.
 func NewHere(f string, args ...interface{}) error {
 	return wrapper{
-		msg:   fmt.Sprintf(f, args...),
-		frame: Caller(1),
+		msg: fmt.Sprintf(f, args...),
+		pc:  Caller(1),
 	}
 }
 
 // NewDepth returns an error that formats as the given text.
-// Frame where error was created (d frames higher) is recorded.
+// Location where error was created (d frames higher) is recorded.
 // Each call to New returns a distinct error value even if the text is identical.
 func NewDepth(d int, f string, args ...interface{}) error {
 	return wrapper{
-		msg:   fmt.Sprintf(f, args...),
-		frame: Caller(d + 1),
+		msg: fmt.Sprintf(f, args...),
+		pc:  Caller(d + 1),
 	}
 }
 
-// NewFrame returns an error with given Frame that formats as the given text.
+// NewLoc returns an error with given PC that formats as the given text.
 // Each call to New returns a distinct error value even if the text is identical.
-func NewFrame(frame Frame, f string, args ...interface{}) error {
+func NewLoc(pc PC, f string, args ...interface{}) error {
 	return wrapper{
-		msg:   fmt.Sprintf(f, args...),
-		frame: frame,
+		msg: fmt.Sprintf(f, args...),
+		pc:  pc,
 	}
 }
 
@@ -71,7 +71,7 @@ func Wrap(err error, f string, args ...interface{}) error {
 }
 
 // WrapHere returns an error that describes given error with given text.
-// Frame where error was wrapped is recorded.
+// Location where error was wrapped is recorded.
 // Returns nil if err is nil.
 func WrapHere(err error, f string, args ...interface{}) error {
 	if err == nil {
@@ -79,14 +79,14 @@ func WrapHere(err error, f string, args ...interface{}) error {
 	}
 
 	return wrapper{
-		err:   err,
-		msg:   fmt.Sprintf(f, args...),
-		frame: Caller(1),
+		err: err,
+		msg: fmt.Sprintf(f, args...),
+		pc:  Caller(1),
 	}
 }
 
 // WrapDepth returns an error that describes given error with given text.
-// Frame where error was created (d frames higher) is recorded.
+// Location where error was created (d frames higher) is recorded.
 // Returns nil if err is nil.
 func WrapDepth(err error, d int, f string, args ...interface{}) error {
 	if err == nil {
@@ -94,23 +94,23 @@ func WrapDepth(err error, d int, f string, args ...interface{}) error {
 	}
 
 	return wrapper{
-		err:   err,
-		msg:   fmt.Sprintf(f, args...),
-		frame: Caller(d + 1),
+		err: err,
+		msg: fmt.Sprintf(f, args...),
+		pc:  Caller(d + 1),
 	}
 }
 
-// WrapFrame returns an error with given Frame that describes given error with given text.
+// WrapLoc returns an error with given PC that describes given error with given text.
 // Returns nil if err is nil.
-func WrapFrame(err error, frame Frame, f string, args ...interface{}) error {
+func WrapLoc(err error, pc PC, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
 
 	return wrapper{
-		err:   err,
-		msg:   fmt.Sprintf(f, args...),
-		frame: frame,
+		err: err,
+		msg: fmt.Sprintf(f, args...),
+		pc:  pc,
 	}
 }
 
@@ -149,21 +149,21 @@ func (e wrapper) Unwrap() error {
 	return e.err
 }
 
-// Frame returns underlaying error location.
-func (e wrapper) Frame() Frame {
-	return e.frame
+// PC returns underlaying error location.
+func (e wrapper) Location() PC {
+	return e.pc
 }
 
 // Caller returns information about the calling goroutine's stack. The argument s is the number of frames to ascend, with 0 identifying the caller of Caller.
-func Caller(s int) Frame {
+func Caller(s int) PC {
 	var pc [1]uintptr
 	runtime.Callers(2+s, pc[:])
-	return Frame(pc[0])
+	return PC(pc[0])
 }
 
 // Funcentry returns information about the calling goroutine's stack. The argument s is the number of frames to ascend, with 0 identifying the caller of Caller.
-func Funcentry(s int) Frame {
+func Funcentry(s int) PC {
 	var pc [1]uintptr
 	runtime.Callers(2+s, pc[:])
-	return Frame(pc[0]).Entry()
+	return PC(pc[0]).Entry()
 }

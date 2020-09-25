@@ -15,7 +15,7 @@ func (e wrapper) Format(s fmt.State, c rune) {
 		e.msg = nomessage
 	}
 
-	if e.frame == 0 {
+	if e.pc == 0 {
 		if e.err == nil {
 			_, _ = s.Write([]byte(e.msg))
 			return
@@ -36,15 +36,15 @@ func (e wrapper) Format(s fmt.State, c rune) {
 	if !s.Flag(' ') {
 		switch {
 		case e.err == nil:
-			fmt.Fprintf(s, "%s (%v)", e.msg, e.frame)
+			fmt.Fprintf(s, "%s (%v)", e.msg, e.pc)
 		default:
-			fmt.Fprintf(s, "%s (%v): %+v", e.msg, e.frame, e.err)
+			fmt.Fprintf(s, "%s (%v): %+v", e.msg, e.pc, e.err)
 		}
 
 		return
 	}
 
-	_, file, line := e.frame.NameFileLine()
+	_, file, line := e.pc.NameFileLine()
 
 	switch {
 	case e.err == nil:

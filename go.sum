@@ -96,8 +96,8 @@ github.com/nikandfor/tlog v0.6.1-0.20200920173347-d29fee383fee/go.mod h1:Cgkn4zO
 github.com/nikandfor/tlog v0.6.1-0.20200921230809-148196d9b0f2/go.mod h1:kk6gA2m7wSigC+Uetn9DtXVi3eUnfuEktNbLR28OEMU=
 github.com/nikandfor/tlog v0.6.1-0.20200922004922-5af7073e9e44 h1:Zgz3Cb7+R0WOZofgJntKE70jG9v5kBtgiK2p9QTXfho=
 github.com/nikandfor/tlog v0.6.1-0.20200922004922-5af7073e9e44/go.mod h1:m7MeWA2n/OBS85WS3r1//6yAoqoWo6iGO05j/6AFSmU=
-github.com/nikandfor/tlog v0.7.0 h1:/3q3jXk6CP4eaEUjTDp+lG9lDt4H31vxKrkeycr5jK0=
-github.com/nikandfor/tlog v0.7.0/go.mod h1:hzj4VMccOWk8+Kbd73GESKx6igwkEH8GBLl1RhYxWVw=
+github.com/nikandfor/tlog v0.7.1-0.20200925073221-401bcbf0f4f3 h1:SLIFk2Die99VBjbBuHJfKfDtRCPvCF+38ygUC66HSzU=
+github.com/nikandfor/tlog v0.7.1-0.20200925073221-401bcbf0f4f3/go.mod h1:hzj4VMccOWk8+Kbd73GESKx6igwkEH8GBLl1RhYxWVw=
 github.com/nikandfor/xrain v0.0.0-20200808102054-6a1388982a5e/go.mod h1:sXdCXqFpifJeBONAcfzn+XJ4nuvKn+Rd10AfHtUtzhQ=
 github.com/nikandfor/xrain v0.0.0-20200818135427-644706c9c405/go.mod h1:2GwCWm2IwYYMBcX4c7U/ehkkb40kDbyWaIjjgp5LiWI=
 github.com/nikandfor/xrain v0.0.0-20200918135248-f1d704dd29ca/go.mod h1:4EY0llqled+vqNGdQjNZSjkUmLXAis9DPBGCKF0BhHU=

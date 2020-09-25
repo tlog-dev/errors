@@ -40,7 +40,7 @@ func TestWrapNil(t *testing.T) {
 	assert.Nil(t, Wrap(err, "qwe"))
 	assert.Nil(t, WrapHere(err, "qwe"))
 	assert.Nil(t, WrapDepth(err, 0, "qwe"))
-	assert.Nil(t, WrapFrame(err, Funcentry(0), "qwe"))
+	assert.Nil(t, WrapLoc(err, Funcentry(0), "qwe"))
 }
 
 func (w testWrapper) Error() string { return "none" }

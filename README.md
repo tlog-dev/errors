@@ -24,8 +24,8 @@ err = errors.NewHere("msg")
 err = errors.NewDepth(1, "msg")
 
 // the same result as previous
-f := errors.Caller(1)
-err = errors.NewFrame(f, "msg")
+pc := errors.Caller(1)
+err = errors.NewLoc(pc, "msg")
 
 // Wrap error
 err = errors.Wrap(err, "msg %v", "args")
@@ -35,7 +35,7 @@ err = errors.WrapHere(err, "msg %v", "args")
 
 err = errors.WrapDepth(err, 1, "msg %v", "args")
 
-err = errors.WrapFrame(err, f, "msg %v", "args")
+err = errors.WrapLoc(err, pc, "msg %v", "args")
 ```
 
 ## Caller
