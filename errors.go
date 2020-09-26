@@ -25,16 +25,14 @@ const nomessage = "(no message)"
 func New(f string, args ...interface{}) error {
 	return wrapper{
 		msg: fmt.Sprintf(f, args...),
+		pc:  Caller(1),
 	}
 }
 
-// NewHere returns an error that formats as the given text.
-// Location where error was created is recorded.
-// Each call to New returns a distinct error value even if the text is identical.
-func NewHere(f string, args ...interface{}) error {
+// NewNoLoc is like a New but with no caller info.
+func NewNoLoc(f string, args ...interface{}) error {
 	return wrapper{
 		msg: fmt.Sprintf(f, args...),
-		pc:  Caller(1),
 	}
 }
 
@@ -67,13 +65,12 @@ func Wrap(err error, f string, args ...interface{}) error {
 	return wrapper{
 		err: err,
 		msg: fmt.Sprintf(f, args...),
+		pc:  Caller(1),
 	}
 }
 
-// WrapHere returns an error that describes given error with given text.
-// Location where error was wrapped is recorded.
-// Returns nil if err is nil.
-func WrapHere(err error, f string, args ...interface{}) error {
+// WrapNoLoc is like Wrap but without caller info.
+func WrapNoLoc(err error, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
@@ -81,7 +78,6 @@ func WrapHere(err error, f string, args ...interface{}) error {
 	return wrapper{
 		err: err,
 		msg: fmt.Sprintf(f, args...),
-		pc:  Caller(1),
 	}
 }
 

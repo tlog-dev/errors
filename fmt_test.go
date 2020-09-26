@@ -9,15 +9,15 @@ import (
 )
 
 func TestErrorFormatLocation(t *testing.T) {
-	err := NewHere("inner")
+	err := New("inner")
 
 	assert.Equal(t, "inner", fmt.Sprintf("%v", err))
 	assert.Equal(t, "inner (fmt_test.go:12)", fmt.Sprintf("%+v", err))
 	assert.Regexp(t, "inner at (github.com/nikandfor/errors/)*fmt_test.go:12", fmt.Sprintf("% +v", err))
 
 	// more
-	err = WrapHere(
-		WrapHere(os.ErrNotExist, "middle"),
+	err = Wrap(
+		Wrap(os.ErrNotExist, "middle"),
 		"global")
 
 	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("%v", err))
@@ -27,9 +27,9 @@ middle at (github.com/nikandfor/errors/)*fmt_test.go:20
 file does not exist`, fmt.Sprintf("% +v", err))
 
 	// one more
-	err = WrapHere(
-		WrapHere(
-			NewHere("inner"),
+	err = Wrap(
+		Wrap(
+			New("inner"),
 			"middle"),
 		"global")
 
@@ -40,9 +40,9 @@ middle at (github.com/nikandfor/errors/)*fmt_test.go:31
 inner at (github.com/nikandfor/errors/)*fmt_test.go:32`, fmt.Sprintf("% +v", err))
 
 	// with no messages
-	err = WrapHere(
-		WrapHere(
-			NewHere(""),
+	err = Wrap(
+		Wrap(
+			New(""),
 			""),
 		"")
 
@@ -54,21 +54,21 @@ inner at (github.com/nikandfor/errors/)*fmt_test.go:32`, fmt.Sprintf("% +v", err
 }
 
 func TestErrorFormat(t *testing.T) {
-	err := New("inner")
+	err := NewNoLoc("inner")
 
 	assert.Equal(t, "inner", fmt.Sprintf("%v", err))
 	assert.Equal(t, "inner", fmt.Sprintf("%+v", err))
 	assert.Equal(t, "inner", fmt.Sprintf("% +v", err))
 
 	// more
-	err = Wrap(Wrap(os.ErrNotExist, "middle"), "global")
+	err = WrapNoLoc(WrapNoLoc(os.ErrNotExist, "middle"), "global")
 
 	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("%v", err))
 	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("%+v", err))
 	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("% +v", err))
 
 	// one more
-	err = Wrap(Wrap(New("inner"), "middle"), "global")
+	err = WrapNoLoc(WrapNoLoc(NewNoLoc("inner"), "middle"), "global")
 
 	assert.Equal(t, "global: middle: inner", fmt.Sprintf("%v", err))
 	assert.Equal(t, "global: middle: inner", fmt.Sprintf("%+v", err))

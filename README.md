@@ -14,11 +14,11 @@ Stdlib `errors` package extension. `go1.13` `errors.Is` and `errors.As` are the 
 // as usual
 err = errors.New("msg")
 
+// do not capture caller info
+err = errors.NewNoLoc("msg")
+
 // fmt.Sprintf like
 err = errors.New("message %v", "args")
-
-// add Frame info
-err = errors.NewHere("msg")
 
 // one Frame higher
 err = errors.NewDepth(1, "msg")
@@ -31,7 +31,7 @@ err = errors.NewLoc(pc, "msg")
 err = errors.Wrap(err, "msg %v", "args")
 
 // all the same function types are available
-err = errors.WrapHere(err, "msg %v", "args")
+err = errors.WrapNoLoc(err, "msg")
 
 err = errors.WrapDepth(err, 1, "msg %v", "args")
 
