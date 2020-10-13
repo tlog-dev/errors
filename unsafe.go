@@ -22,7 +22,7 @@ import (
 // link to stdlib errors.Is
 func Is(err, target error) bool
 
-//go:linkname As errors.Is
+//go:linkname As errors.As
 
 // As finds the first error in err's chain that matches target, and if so, sets
 // target to that error value and returns true.
