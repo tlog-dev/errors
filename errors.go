@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/nikandfor/tlog"
+	"github.com/nikandfor/tlog/loc"
 )
 
 type (
 	// PC is a program counter and represents location in a source code.
-	PC = tlog.PC
+	PC = loc.PC
 
 	wrapper struct {
 		err error
