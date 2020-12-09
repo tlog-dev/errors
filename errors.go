@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/nikandfor/tlog/loc"
+	"github.com/nikandfor/loc"
 )
 
 type (
