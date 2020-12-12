@@ -4,6 +4,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/nikandfor/loc"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -40,7 +41,7 @@ func TestWrapNil(t *testing.T) {
 	assert.Nil(t, Wrap(err, "qwe"))
 	assert.Nil(t, WrapNoLoc(err, "qwe"))
 	assert.Nil(t, WrapDepth(err, 0, "qwe"))
-	assert.Nil(t, WrapLoc(err, Funcentry(0), "qwe"))
+	assert.Nil(t, WrapLoc(err, loc.Funcentry(0), "qwe"))
 }
 
 func (w testWrapper) Error() string { return "none" }

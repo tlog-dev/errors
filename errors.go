@@ -2,7 +2,6 @@ package errors
 
 import (
 	"fmt"
-	"runtime"
 
 	"github.com/nikandfor/loc"
 )
@@ -25,7 +24,7 @@ const nomessage = "(no message)"
 func New(f string, args ...interface{}) error {
 	return wrapper{
 		msg: fmt.Sprintf(f, args...),
-		pc:  Caller(1),
+		pc:  loc.Caller(1),
 	}
 }
 
@@ -42,7 +41,7 @@ func NewNoLoc(f string, args ...interface{}) error {
 func NewDepth(d int, f string, args ...interface{}) error {
 	return wrapper{
 		msg: fmt.Sprintf(f, args...),
-		pc:  Caller(d + 1),
+		pc:  loc.Caller(d + 1),
 	}
 }
 
@@ -65,7 +64,7 @@ func Wrap(err error, f string, args ...interface{}) error {
 	return wrapper{
 		err: err,
 		msg: fmt.Sprintf(f, args...),
-		pc:  Caller(1),
+		pc:  loc.Caller(1),
 	}
 }
 
@@ -92,7 +91,7 @@ func WrapDepth(err error, d int, f string, args ...interface{}) error {
 	return wrapper{
 		err: err,
 		msg: fmt.Sprintf(f, args...),
-		pc:  Caller(d + 1),
+		pc:  loc.Caller(d + 1),
 	}
 }
 
@@ -148,18 +147,4 @@ func (e wrapper) Unwrap() error {
 // PC returns underlaying error location.
 func (e wrapper) Location() PC {
 	return e.pc
-}
-
-// Caller returns information about the calling goroutine's stack. The argument s is the number of frames to ascend, with 0 identifying the caller of Caller.
-func Caller(s int) PC {
-	var pc [1]uintptr
-	runtime.Callers(2+s, pc[:])
-	return PC(pc[0])
-}
-
-// Funcentry returns information about the calling goroutine's stack. The argument s is the number of frames to ascend, with 0 identifying the caller of Caller.
-func Funcentry(s int) PC {
-	var pc [1]uintptr
-	runtime.Callers(2+s, pc[:])
-	return PC(pc[0]).Entry()
 }
