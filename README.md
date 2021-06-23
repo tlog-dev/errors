@@ -24,7 +24,7 @@ err = errors.New("message %v", "args")
 err = errors.NewDepth(1, "msg")
 
 // the same result as previous
-pc := errors.Caller(1)
+pc := loc.Caller(1)
 err = errors.NewLoc(pc, "msg")
 
 // Wrap error
@@ -40,10 +40,12 @@ err = errors.WrapLoc(err, pc, "msg %v", "args")
 
 ## Caller
 
-Caller frame can be added to error so later you can get to know where error was generated.
+Caller frame can be added to error so later you can get to know where error was generated. It's added by default and captures instruction calling `errors.(Wrap|New)*`.
+
+Caller is moved to a separate module [github.com/nikandfor/loc](https://github.com/nikandfor/loc).
 
 ```go
-f := errors.Caller(1)
+pc := loc.Caller(1)
 
-f = errors.Funcentry(1)
+pc = loc.FuncEntry(1)
 ```
