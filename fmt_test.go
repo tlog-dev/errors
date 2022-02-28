@@ -65,12 +65,12 @@ func TestErrorFormat(t *testing.T) {
 
 	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("%v", err))
 	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("%+v", err))
-	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("% +v", err))
+	assert.Equal(t, "global\nmiddle\nfile does not exist", fmt.Sprintf("% +v", err))
 
 	// one more
 	err = WrapNoLoc(WrapNoLoc(NewNoLoc("inner"), "middle"), "global")
 
 	assert.Equal(t, "global: middle: inner", fmt.Sprintf("%v", err))
 	assert.Equal(t, "global: middle: inner", fmt.Sprintf("%+v", err))
-	assert.Equal(t, "global: middle: inner", fmt.Sprintf("% +v", err))
+	assert.Equal(t, "global\nmiddle\ninner", fmt.Sprintf("% +v", err))
 }

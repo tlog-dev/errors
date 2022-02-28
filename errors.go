@@ -8,12 +8,26 @@ import (
 
 type (
 	// PC is a program counter and represents location in a source code.
-	PC = loc.PC
+	PC  = loc.PC
+	PCs = loc.PCs
 
 	wrapper struct {
 		err error
 		msg string
-		pc  PC
+	}
+
+	withPC struct {
+		wrapper
+		pc PC
+	}
+
+	withPCs struct {
+		wrapper
+		pcs PCs
+	}
+
+	Locationer interface {
+		Location() PC
 	}
 )
 
@@ -22,9 +36,11 @@ const nomessage = "(no message)"
 // New returns an error that formats as the given text.
 // Each call to New returns a distinct error value even if the text is identical.
 func New(f string, args ...interface{}) error {
-	return wrapper{
-		msg: fmt.Sprintf(f, args...),
-		pc:  loc.Caller(1),
+	return withPC{
+		wrapper: wrapper{
+			msg: fmt.Sprintf(f, args...),
+		},
+		pc: loc.Caller(1),
 	}
 }
 
@@ -39,18 +55,22 @@ func NewNoLoc(f string, args ...interface{}) error {
 // Location where error was created (d frames higher) is recorded.
 // Each call to New returns a distinct error value even if the text is identical.
 func NewDepth(d int, f string, args ...interface{}) error {
-	return wrapper{
-		msg: fmt.Sprintf(f, args...),
-		pc:  loc.Caller(d + 1),
+	return withPC{
+		wrapper: wrapper{
+			msg: fmt.Sprintf(f, args...),
+		},
+		pc: loc.Caller(d + 1),
 	}
 }
 
 // NewLoc returns an error with given PC that formats as the given text.
 // Each call to New returns a distinct error value even if the text is identical.
 func NewLoc(pc PC, f string, args ...interface{}) error {
-	return wrapper{
-		msg: fmt.Sprintf(f, args...),
-		pc:  pc,
+	return withPC{
+		wrapper: wrapper{
+			msg: fmt.Sprintf(f, args...),
+		},
+		pc: pc,
 	}
 }
 
@@ -61,10 +81,12 @@ func Wrap(err error, f string, args ...interface{}) error {
 		return nil
 	}
 
-	return wrapper{
-		err: err,
-		msg: fmt.Sprintf(f, args...),
-		pc:  loc.Caller(1),
+	return withPC{
+		wrapper: wrapper{
+			err: err,
+			msg: fmt.Sprintf(f, args...),
+		},
+		pc: loc.Caller(1),
 	}
 }
 
@@ -88,10 +110,12 @@ func WrapDepth(err error, d int, f string, args ...interface{}) error {
 		return nil
 	}
 
-	return wrapper{
-		err: err,
-		msg: fmt.Sprintf(f, args...),
-		pc:  loc.Caller(d + 1),
+	return withPC{
+		wrapper: wrapper{
+			err: err,
+			msg: fmt.Sprintf(f, args...),
+		},
+		pc: loc.Caller(d + 1),
 	}
 }
 
@@ -102,10 +126,12 @@ func WrapLoc(err error, pc PC, f string, args ...interface{}) error {
 		return nil
 	}
 
-	return wrapper{
-		err: err,
-		msg: fmt.Sprintf(f, args...),
-		pc:  pc,
+	return withPC{
+		wrapper: wrapper{
+			err: err,
+			msg: fmt.Sprintf(f, args...),
+		},
+		pc: pc,
 	}
 }
 
@@ -145,6 +171,6 @@ func (e wrapper) Unwrap() error {
 }
 
 // PC returns underlaying error location.
-func (e wrapper) Location() PC {
+func (e withPC) Location() PC {
 	return e.pc
 }

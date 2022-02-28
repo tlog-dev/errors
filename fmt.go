@@ -1,55 +1,53 @@
 package errors
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Format formats error message and adds location if present.
 //
 // fmt.Formatter interface implementation.
 func (e wrapper) Format(s fmt.State, c rune) {
-	if !s.Flag('+') {
-		_, _ = s.Write([]byte(e.Error()))
-		return
-	}
+	e.formatMain(s, c)
+	e.formatSub(s, c, true)
+}
 
+func (e wrapper) formatMain(s fmt.State, c rune) {
 	if e.msg == "" {
 		e.msg = nomessage
 	}
 
-	if e.pc == 0 {
-		if e.err == nil {
-			_, _ = s.Write([]byte(e.msg))
-			return
-		}
+	fmt.Fprintf(s, "%s", e.msg)
+}
 
-		var f string
+func (e wrapper) formatSub(s fmt.State, c rune, delim bool) {
+	if e.err == nil {
+		return
+	}
+
+	if delim {
 		if s.Flag(' ') {
-			f = "% +v"
+			_, _ = s.Write([]byte{'\n'})
 		} else {
-			f = "%+v"
+			_, _ = s.Write([]byte{':', ' '})
 		}
-
-		fmt.Fprintf(s, e.msg+": "+f, e.err)
-
-		return
 	}
 
-	if !s.Flag(' ') {
-		switch {
-		case e.err == nil:
-			fmt.Fprintf(s, "%s (%v)", e.msg, e.pc)
-		default:
-			fmt.Fprintf(s, "%s (%v): %+v", e.msg, e.pc, e.err)
+	subPrintArg(s, e.err, c)
+}
+
+func (e withPC) Format(s fmt.State, c rune) {
+	if e.msg != "" || s.Flag('+') || e.err == nil {
+		e.wrapper.formatMain(s, c)
+	}
+
+	if e.pc != 0 && s.Flag('+') {
+		if s.Flag(' ') {
+			fmt.Fprintf(s, " at %+v", e.pc)
+		} else {
+			fmt.Fprintf(s, " (%v)", e.pc)
 		}
-
-		return
 	}
 
-	_, file, line := e.pc.NameFileLine()
-
-	switch {
-	case e.err == nil:
-		fmt.Fprintf(s, "%s at %v:%d", e.msg, file, line)
-	default:
-		fmt.Fprintf(s, "%s at %v:%d\n% +v", e.msg, file, line, e.err)
-	}
+	e.wrapper.formatSub(s, c, e.msg != "" || s.Flag('+'))
 }
