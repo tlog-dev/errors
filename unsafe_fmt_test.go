@@ -42,8 +42,23 @@ func TestSubPrintArg(t *testing.T) {
 
 	//
 
+	var f2 testformatter
+
+	subPrintArg(&f, &f2, 'v')
+
+	assert.Equal(t, testformatter{
+		flags: flags("+0"),
+		wid:   12,
+		widok: true,
+		prc:   6,
+		prcok: true,
+		verb:  'v',
+	}, f2)
+
+	//
+
 	f = testformatter{}
-	f2 := testformatter{
+	f2 = testformatter{
 		flags: flags("-# "),
 		prc:   3,
 		prcok: true,

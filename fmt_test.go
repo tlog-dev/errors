@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestErrorFormatLocation(t *testing.T) {
+func TestErrorFormatCaller(t *testing.T) {
 	err := New("inner")
 
 	assert.Equal(t, "inner", fmt.Sprintf("%v", err))
@@ -54,21 +54,21 @@ inner at (((github.com/)?nikandfor/)?errors/)?fmt_test.go:32`, fmt.Sprintf("% +v
 }
 
 func TestErrorFormat(t *testing.T) {
-	err := NewNoLoc("inner")
+	err := NewNoCaller("inner")
 
 	assert.Equal(t, "inner", fmt.Sprintf("%v", err))
 	assert.Equal(t, "inner", fmt.Sprintf("%+v", err))
 	assert.Equal(t, "inner", fmt.Sprintf("% +v", err))
 
 	// more
-	err = WrapNoLoc(WrapNoLoc(os.ErrNotExist, "middle"), "global")
+	err = WrapNoCaller(WrapNoCaller(os.ErrNotExist, "middle"), "global")
 
 	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("%v", err))
 	assert.Equal(t, "global: middle: file does not exist", fmt.Sprintf("%+v", err))
 	assert.Equal(t, "global\nmiddle\nfile does not exist", fmt.Sprintf("% +v", err))
 
 	// one more
-	err = WrapNoLoc(WrapNoLoc(NewNoLoc("inner"), "middle"), "global")
+	err = WrapNoCaller(WrapNoCaller(NewNoCaller("inner"), "middle"), "global")
 
 	assert.Equal(t, "global: middle: inner", fmt.Sprintf("%v", err))
 	assert.Equal(t, "global: middle: inner", fmt.Sprintf("%+v", err))

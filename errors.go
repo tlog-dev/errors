@@ -26,8 +26,12 @@ type (
 		pcs PCs
 	}
 
-	Locationer interface {
-		Location() PC
+	Callerer interface {
+		Caller() PC
+	}
+
+	Callerser interface {
+		Callers() PCs
 	}
 )
 
@@ -44,15 +48,15 @@ func New(f string, args ...interface{}) error {
 	}
 }
 
-// NewNoLoc is like a New but with no caller info.
-func NewNoLoc(f string, args ...interface{}) error {
+// NewNoCaller is like a New but with no caller info.
+func NewNoCaller(f string, args ...interface{}) error {
 	return wrapper{
 		msg: fmt.Sprintf(f, args...),
 	}
 }
 
 // NewDepth returns an error that formats as the given text.
-// Location where error was created (d frames higher) is recorded.
+// Callsite where error was created (d frames higher) is recorded.
 // Each call to New returns a distinct error value even if the text is identical.
 func NewDepth(d int, f string, args ...interface{}) error {
 	return withPC{
@@ -63,14 +67,38 @@ func NewDepth(d int, f string, args ...interface{}) error {
 	}
 }
 
-// NewLoc returns an error with given PC that formats as the given text.
+// NewStack returns an error with message formatted in fmt package style.
+// Caller frames are recorded (skipping d frames).
+// Experimental, may be deleted at any time.
+func NewStack(skip, n int, f string, args ...interface{}) error {
+	return withPCs{
+		wrapper: wrapper{
+			msg: fmt.Sprintf(f, args...),
+		},
+		pcs: loc.Callers(skip+1, n),
+	}
+}
+
+// NewCaller returns an error with given PC that formats as the given text.
 // Each call to New returns a distinct error value even if the text is identical.
-func NewLoc(pc PC, f string, args ...interface{}) error {
+func NewCaller(pc PC, f string, args ...interface{}) error {
 	return withPC{
 		wrapper: wrapper{
 			msg: fmt.Sprintf(f, args...),
 		},
 		pc: pc,
+	}
+}
+
+// NewCallers returns an error with given PC that formats as the given text.
+// Each call to New returns a distinct error value even if the text is identical.
+// Experimental, may be deleted at any time.
+func NewCallers(pcs PCs, f string, args ...interface{}) error {
+	return withPCs{
+		wrapper: wrapper{
+			msg: fmt.Sprintf(f, args...),
+		},
+		pcs: pcs,
 	}
 }
 
@@ -90,8 +118,8 @@ func Wrap(err error, f string, args ...interface{}) error {
 	}
 }
 
-// WrapNoLoc is like Wrap but without caller info.
-func WrapNoLoc(err error, f string, args ...interface{}) error {
+// WrapNoCaller is like Wrap but without caller info.
+func WrapNoCaller(err error, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
@@ -103,7 +131,7 @@ func WrapNoLoc(err error, f string, args ...interface{}) error {
 }
 
 // WrapDepth returns an error that describes given error with given text.
-// Location where error was created (d frames higher) is recorded.
+// Callsite where error was created (d frames higher) is recorded.
 // Returns nil if err is nil.
 func WrapDepth(err error, d int, f string, args ...interface{}) error {
 	if err == nil {
@@ -119,9 +147,24 @@ func WrapDepth(err error, d int, f string, args ...interface{}) error {
 	}
 }
 
-// WrapLoc returns an error with given PC that describes given error with given text.
+// Experimental, may be deleted at any time.
+func WrapStack(err error, skip, n int, f string, args ...interface{}) error {
+	if err == nil {
+		return nil
+	}
+
+	return withPCs{
+		wrapper: wrapper{
+			err: err,
+			msg: fmt.Sprintf(f, args...),
+		},
+		pcs: loc.Callers(skip+1, n),
+	}
+}
+
+// WrapCaller returns an error with given PC that describes given error with given text.
 // Returns nil if err is nil.
-func WrapLoc(err error, pc PC, f string, args ...interface{}) error {
+func WrapCaller(err error, pc PC, f string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}
@@ -135,17 +178,18 @@ func WrapLoc(err error, pc PC, f string, args ...interface{}) error {
 	}
 }
 
-// Unwrap returns the result of calling the Unwrap method on err, if err's
-// type contains an Unwrap method returning error.
-// Otherwise, Unwrap returns nil.
-func Unwrap(err error) error {
-	switch e := err.(type) {
-	case wrapper:
-		return e.err
-	case interface{ Unwrap() error }:
-		return e.Unwrap()
-	default:
+// Experimental, may be deleted at any time.
+func WrapCallers(err error, pcs PCs, f string, args ...interface{}) error {
+	if err == nil {
 		return nil
+	}
+
+	return withPCs{
+		wrapper: wrapper{
+			err: err,
+			msg: fmt.Sprintf(f, args...),
+		},
+		pcs: pcs,
 	}
 }
 
@@ -170,7 +214,21 @@ func (e wrapper) Unwrap() error {
 	return e.err
 }
 
-// PC returns underlaying error location.
-func (e withPC) Location() PC {
+// Caller returns underlaying error location.
+func (e withPC) Caller() PC {
 	return e.pc
+}
+
+// Caller returns underlaying error location.
+func (e withPCs) Caller() PC {
+	if len(e.pcs) == 0 {
+		return 0
+	}
+
+	return e.pcs[0]
+}
+
+// Callers returns underlaying error location.
+func (e withPCs) Callers() PCs {
+	return e.pcs
 }
