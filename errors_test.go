@@ -48,7 +48,7 @@ func TestWrapNil(t *testing.T) {
 	assert.Nil(t, WrapNoCaller(err, "qwe"))
 	assert.Nil(t, WrapDepth(err, 0, "qwe"))
 	assert.Nil(t, WrapStack(err, 0, 0, "qwe"))
-	assert.Nil(t, WrapCaller(err, loc.Funcentry(0), "qwe"))
+	assert.Nil(t, WrapCaller(err, loc.FuncEntry(0), "qwe"))
 	assert.Nil(t, WrapCallers(err, loc.Callers(0, 1), "qwe"))
 }
 
