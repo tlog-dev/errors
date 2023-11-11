@@ -1,5 +1,5 @@
 [![Documentation](https://pkg.go.dev/badge/tlog.app/go/errors)](https://pkg.go.dev/tlog.app/go/errors?tab=doc)
-[![Build Status](https://travis-ci.com/tlog-dev/errors.svg?branch=master)](https://travis-ci.com/tlog-dev/errors)
+[![Go workflow](https://github.com/tlog-dev/errors/actions/workflows/go.yml/badge.svg)](https://github.com/tlog-dev/errors/actions/workflows/go.yml)
 [![CircleCI](https://circleci.com/gh/tlog-dev/errors.svg?style=svg)](https://circleci.com/gh/tlog-dev/errors)
 [![codecov](https://codecov.io/gh/tlog-dev/errors/branch/master/graph/badge.svg)](https://codecov.io/gh/tlog-dev/errors)
 [![Go Report Card](https://goreportcard.com/badge/tlog.app/go/errors)](https://goreportcard.com/report/tlog.app/go/errors)
