@@ -1,10 +1,9 @@
-[![Documentation](https://pkg.go.dev/badge/github.com/nikandfor/errors)](https://pkg.go.dev/github.com/nikandfor/errors?tab=doc)
-[![Build Status](https://travis-ci.com/nikandfor/errors.svg?branch=master)](https://travis-ci.com/nikandfor/errors)
-[![CircleCI](https://circleci.com/gh/nikandfor/errors.svg?style=svg)](https://circleci.com/gh/nikandfor/errors)
-[![codecov](https://codecov.io/gh/nikandfor/errors/branch/master/graph/badge.svg)](https://codecov.io/gh/nikandfor/errors)
-[![GolangCI](https://golangci.com/badges/github.com/nikandfor/errors.svg)](https://golangci.com/r/github.com/nikandfor/errors)
-[![Go Report Card](https://goreportcard.com/badge/github.com/nikandfor/errors)](https://goreportcard.com/report/github.com/nikandfor/errors)
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/nikandfor/errors?sort=semver)
+[![Documentation](https://pkg.go.dev/badge/tlog.app/go/errors)](https://pkg.go.dev/tlog.app/go/errors?tab=doc)
+[![Build Status](https://travis-ci.com/tlog-dev/errors.svg?branch=master)](https://travis-ci.com/tlog-dev/errors)
+[![CircleCI](https://circleci.com/gh/tlog-dev/errors.svg?style=svg)](https://circleci.com/gh/tlog-dev/errors)
+[![codecov](https://codecov.io/gh/tlog-dev/errors/branch/master/graph/badge.svg)](https://codecov.io/gh/tlog-dev/errors)
+[![Go Report Card](https://goreportcard.com/badge/tlog.app/go/errors)](https://goreportcard.com/report/tlog.app/go/errors)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/tlog-dev/errors?sort=semver)
 
 # errors
 

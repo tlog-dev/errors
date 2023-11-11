@@ -3,7 +3,7 @@ package errors
 import (
 	"fmt"
 
-	"github.com/nikandfor/loc"
+	"tlog.app/go/loc"
 )
 
 type (

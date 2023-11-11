@@ -3,7 +3,7 @@ package errors
 import (
 	"testing"
 
-	"github.com/nikandfor/loc"
+	"tlog.app/go/loc"
 	"github.com/stretchr/testify/assert"
 )
 
