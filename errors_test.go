@@ -1,11 +1,12 @@
+//nolint:errorlint
 package errors
 
 import (
 	"os"
 	"testing"
 
-	"tlog.app/go/loc"
 	"github.com/stretchr/testify/assert"
+	"tlog.app/go/loc"
 )
 
 func TestError(t *testing.T) {
@@ -14,7 +15,7 @@ func TestError(t *testing.T) {
 	assert.Equal(t, "qwe", Wrap(New("qwe"), "").Error())
 }
 
-type testWrapper struct {
+type testWrapper struct { //nolint:errname
 	err error
 }
 
@@ -38,18 +39,18 @@ func TestUnwrap(t *testing.T) {
 
 	assert.True(t, mid == Unwrap(testWrapper{mid}))
 
-	assert.Nil(t, Unwrap(os.ErrNotExist))
+	assert.NoError(t, Unwrap(os.ErrNotExist))
 }
 
 func TestWrapNil(t *testing.T) {
 	var err error
 
-	assert.Nil(t, Wrap(err, "qwe"))
-	assert.Nil(t, WrapNoCaller(err, "qwe"))
-	assert.Nil(t, WrapDepth(err, 0, "qwe"))
-	assert.Nil(t, WrapStack(err, 0, 0, "qwe"))
-	assert.Nil(t, WrapCaller(err, loc.FuncEntry(0), "qwe"))
-	assert.Nil(t, WrapCallers(err, loc.Callers(0, 1), "qwe"))
+	assert.NoError(t, Wrap(err, "qwe"))
+	assert.NoError(t, WrapNoCaller(err, "qwe"))
+	assert.NoError(t, WrapDepth(err, 0, "qwe"))
+	assert.NoError(t, WrapStack(err, 0, 0, "qwe"))
+	assert.NoError(t, WrapCaller(err, loc.FuncEntry(0), "qwe"))
+	assert.NoError(t, WrapCallers(err, loc.Callers(0, 1), "qwe"))
 }
 
 func (w testWrapper) Error() string { return "none" }

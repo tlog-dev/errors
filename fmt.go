@@ -12,7 +12,7 @@ func (e wrapper) Format(s fmt.State, c rune) {
 	e.formatSub(s, c, true)
 }
 
-func (e wrapper) formatMain(s fmt.State, c rune) {
+func (e wrapper) formatMain(s fmt.State, _ rune) {
 	if e.msg == "" {
 		e.msg = nomessage
 	}

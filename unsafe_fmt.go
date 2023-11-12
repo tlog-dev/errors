@@ -71,7 +71,7 @@ func newPrinter() unsafe.Pointer
 //go:linkname ppFree fmt.(*pp).free
 func ppFree(unsafe.Pointer)
 
-func (formatter) Format(s fmt.State, c rune) {
+func (formatter) Format(s fmt.State, _ rune) {
 	i := *(*iface)(unsafe.Pointer(&s))
 
 	ppType = i.typ
