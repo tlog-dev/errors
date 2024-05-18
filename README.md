@@ -41,7 +41,7 @@ err = errors.WrapLoc(err, pc, "msg %v", "args")
 
 Caller frame can be added to error so later you can get to know where error was generated. It's added by default and captures instruction calling `errors.(Wrap|New)*`.
 
-Caller is moved to a separate module [github.com/nikandfor/loc](https://github.com/nikandfor/loc).
+Caller is moved to a separate module [tlog.app/go/loc](https://github.com/tlog-dev/loc).
 
 ```go
 pc := loc.Caller(1)
