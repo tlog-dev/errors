@@ -74,6 +74,7 @@ func TestSubPrintArg(t *testing.T) {
 	}, f)
 }
 
+/*
 func BenchmarkPringArg(b *testing.B) {
 	b.ReportAllocs()
 
@@ -85,6 +86,7 @@ func BenchmarkPringArg(b *testing.B) {
 		ppFree(pp)
 	}
 }
+*/
 
 func BenchmarkPringArgFallback(b *testing.B) {
 	b.ReportAllocs()

@@ -51,3 +51,5 @@ gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 tlog.app/go/loc v0.6.1 h1:Eae0owcUBxpQm5KRuZHJFQKXlA7D8hGMw53tKdp0zMY=
 tlog.app/go/loc v0.6.1/go.mod h1:k5eWl4QTHUxt1iyV324nJ/I6ib9KgjlluOl1A634IyE=
+tlog.app/go/loc v0.6.2-0.20240728215949-4e1d1d57f511 h1:E6LF6fY1TcOtQkKu/DqrrFVA6t+aNeG/cn5X/KlVgzg=
+tlog.app/go/loc v0.6.2-0.20240728215949-4e1d1d57f511/go.mod h1:j4SIBNrXEK6Hqy/smwt3oRrHfMoSDI6Kg/Jf0GUHWCI=

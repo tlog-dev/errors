@@ -2,6 +2,8 @@ package errors
 
 import (
 	"fmt"
+	"strconv"
+	"unsafe"
 )
 
 // Format formats error message and adds location if present.
@@ -50,4 +52,42 @@ func (e withPC) Format(s fmt.State, c rune) {
 	}
 
 	e.wrapper.formatSub(s, c, e.msg != "" || s.Flag('+'))
+}
+
+func subFormat(s fmt.State, arg interface{}, verb rune) {
+	var buf [64]byte
+
+	i := 0
+
+	buf[i] = '%'
+	i++
+
+	for _, f := range "-+# 0" {
+		if s.Flag(int(f)) {
+			buf[i] = byte(f)
+			i++
+		}
+	}
+
+	if w, ok := s.Width(); ok {
+		q := strconv.AppendInt(buf[:i], int64(w), 10)
+		i = len(q)
+	}
+
+	if p, ok := s.Precision(); ok {
+		buf[i] = '.'
+		i++
+
+		q := strconv.AppendInt(buf[:i], int64(p), 10)
+		i = len(q)
+	}
+
+	buf[i] = byte(verb)
+	i++
+
+	fmt.Fprintf(s, bytesToString(buf[:i]), arg)
+}
+
+func bytesToString(b []byte) string {
+	return *(*string)(unsafe.Pointer(&b))
 }

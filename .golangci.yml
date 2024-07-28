@@ -3,8 +3,6 @@ run:
 linters-settings:
   govet:
     check-shadowing: false
-  golint:
-    min-confidence: 0
   gocognit:
     min-complexity: 30
   cyclop:
@@ -66,7 +64,6 @@ linters:
   disable:
     - err113
     - exhaustive
-    - exhaustivestruct
     - exhaustruct
     - forcetypeassert
     - funlen
@@ -74,7 +71,6 @@ linters:
     - gochecknoglobals
     - gochecknoinits
     - godox
-    - golint
     - gomnd
     - mnd
     - nakedret

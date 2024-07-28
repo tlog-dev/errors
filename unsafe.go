@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.13 && ignore
+// +build go1.13,ignore
 
 //nolint:godot
 package errors
