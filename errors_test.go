@@ -45,12 +45,12 @@ func TestUnwrap(t *testing.T) {
 func TestWrapNil(t *testing.T) {
 	var err error
 
-	assert.NoError(t, Wrap(err, "qwe"))
-	assert.NoError(t, WrapNoCaller(err, "qwe"))
-	assert.NoError(t, WrapDepth(err, 0, "qwe"))
-	assert.NoError(t, WrapStack(err, 0, 0, "qwe"))
-	assert.NoError(t, WrapCaller(err, loc.FuncEntry(0), "qwe"))
-	assert.NoError(t, WrapCallers(err, loc.Callers(0, 1), "qwe"))
+	assert.Panics(t, func() { Wrap(err, "qwe") })
+	assert.Panics(t, func() { WrapNoCaller(err, "qwe") })
+	assert.Panics(t, func() { WrapDepth(err, 0, "qwe") })
+	assert.Panics(t, func() { WrapStack(err, 0, 0, "qwe") })
+	assert.Panics(t, func() { WrapCaller(err, loc.FuncEntry(0), "qwe") })
+	assert.Panics(t, func() { WrapCallers(err, loc.Callers(0, 1), "qwe") })
 }
 
 func (w testWrapper) Error() string { return "none" }

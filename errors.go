@@ -106,7 +106,7 @@ func NewCallers(pcs PCs, f string, args ...interface{}) error {
 // Returns nil if err is nil.
 func Wrap(err error, f string, args ...interface{}) error {
 	if err == nil {
-		return nil
+		panic("wrapping nil error")
 	}
 
 	return withPC{
@@ -121,7 +121,7 @@ func Wrap(err error, f string, args ...interface{}) error {
 // WrapNoCaller is like Wrap but without caller info.
 func WrapNoCaller(err error, f string, args ...interface{}) error {
 	if err == nil {
-		return nil
+		panic("wrapping nil error")
 	}
 
 	return wrapper{
@@ -135,7 +135,7 @@ func WrapNoCaller(err error, f string, args ...interface{}) error {
 // Returns nil if err is nil.
 func WrapDepth(err error, d int, f string, args ...interface{}) error {
 	if err == nil {
-		return nil
+		panic("wrapping nil error")
 	}
 
 	return withPC{
@@ -150,7 +150,7 @@ func WrapDepth(err error, d int, f string, args ...interface{}) error {
 // Experimental, may be deleted at any time.
 func WrapStack(err error, skip, n int, f string, args ...interface{}) error {
 	if err == nil {
-		return nil
+		panic("wrapping nil error")
 	}
 
 	return withPCs{
@@ -166,7 +166,7 @@ func WrapStack(err error, skip, n int, f string, args ...interface{}) error {
 // Returns nil if err is nil.
 func WrapCaller(err error, pc PC, f string, args ...interface{}) error {
 	if err == nil {
-		return nil
+		panic("wrapping nil error")
 	}
 
 	return withPC{
@@ -181,7 +181,7 @@ func WrapCaller(err error, pc PC, f string, args ...interface{}) error {
 // Experimental, may be deleted at any time.
 func WrapCallers(err error, pcs PCs, f string, args ...interface{}) error {
 	if err == nil {
-		return nil
+		panic("wrapping nil error")
 	}
 
 	return withPCs{
