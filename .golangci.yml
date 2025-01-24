@@ -63,6 +63,7 @@ linters:
   enable-all: true
   disable:
     - err113
+    - errname
     - exhaustive
     - exhaustruct
     - forcetypeassert
