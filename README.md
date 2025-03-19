@@ -7,44 +7,15 @@
 
 # errors
 
-Stdlib `errors` package extension. `go1.13` `errors.Is` and `errors.As` are the same functions as in stdlib (not even copies).
+`errors` is a wrapper around the standard `errors.New` and `fmt.Errorf` functions.
+It unifies their APIs, allowing you to create new errors or wrap existing ones with rich context (formatted message with arguments).
 
-```go
-// as usual
-err = errors.New("msg")
+It provides two core functions:
 
-// do not capture caller info
-err = errors.NewNoLoc("msg")
-
-// fmt.Sprintf like
-err = errors.New("message %v", "args")
-
-// one Frame higher
-err = errors.NewDepth(1, "msg")
-
-// the same result as previous
-pc := loc.Caller(1)
-err = errors.NewLoc(pc, "msg")
-
-// Wrap error
-err = errors.Wrap(err, "msg %v", "args")
-
-// all the same function types are available
-err = errors.WrapNoLoc(err, "msg")
-
-err = errors.WrapDepth(err, 1, "msg %v", "args")
-
-err = errors.WrapLoc(err, pc, "msg %v", "args")
+```
+errors.New(format string, args ...any) error
+errors.Wrap(err error, format string, args ...any) error
 ```
 
-## Caller
-
-Caller frame can be added to error so later you can get to know where error was generated. It's added by default and captures instruction calling `errors.(Wrap|New)*`.
-
-Caller is moved to a separate module [tlog.app/go/loc](https://github.com/tlog-dev/loc).
-
-```go
-pc := loc.Caller(1)
-
-pc = loc.FuncEntry(1)
-```
+While it previously had more features, I eventually realized that,
+in most cases, anything beyond simple error wrapping is an overcomplication.
