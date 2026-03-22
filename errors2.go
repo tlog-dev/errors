@@ -32,16 +32,24 @@ func Wrap(err error, format string, args ...any) error {
 		panic("wrapping nil error")
 	}
 
-	return &wrap{
+	return wrap{
 		err: err,
 		msg: fmt.Sprintf(format, args...),
 	}
 }
 
-func (w *wrap) Error() string {
+func WrapNil(err error, format string, args ...any) error {
+	if err == nil {
+		return nil
+	}
+
+	return Wrap(err, format, args...)
+}
+
+func (w wrap) Error() string {
 	return fmt.Sprintf("%v: %v", w.msg, w.err)
 }
 
-func (w *wrap) Unwrap() error {
+func (w wrap) Unwrap() error {
 	return w.err
 }

@@ -80,6 +80,25 @@ func TestErrors(tb *testing.T) {
 
 		_ = errors.Wrap(nil, "wrap nil")
 	}()
+
+	if e1, e2 := errors.Wrap(err1, "wrap"), errors.Wrap(err1, "wrap"); e1 != e2 {
+		tb.Errorf("expected the same result\n%v\n%v", e1, e2)
+	}
+
+	if e1, e2 := errors.Wrap(err1, "wrap"), errors.WrapNil(err1, "wrap"); e1 != e2 {
+		tb.Errorf("expected the same result\n%v\n%v", e1, e2)
+	}
+
+	func() {
+		defer func() {
+			p := recover()
+			if p != nil {
+				tb.Errorf("panic: %v", p)
+			}
+		}()
+
+		_ = errors.WrapNil(nil, "wrap nil")
+	}()
 }
 
 func (e *testErr) Error() string { return fmt.Sprintf("testErr(%v)", e.val) }
