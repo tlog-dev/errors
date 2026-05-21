@@ -18,6 +18,7 @@ type (
 func Is(err, target error) bool     { return errors.Is(err, target) }
 func As(err error, target any) bool { return errors.As(err, target) }
 func Unwrap(err error) error        { return errors.Unwrap(err) }
+func Join(errs ...error) error      { return errors.Join(errs...) }
 
 func New(format string, args ...any) error {
 	if args == nil {

@@ -99,6 +99,11 @@ func TestErrors(tb *testing.T) {
 
 		_ = errors.WrapNil(nil, "wrap nil")
 	}()
+
+	err4 := errors.Join(err1, err2, err3)
+	if !errors.Is(err4, err1) || !errors.Is(err4, err2) || !errors.Is(err4, err3) {
+		tb.Errorf("each of the following errors should be `Is` the first one\n{%v}\n%v\n%v\n%v", err4, err1, err2, err3)
+	}
 }
 
 func (e *testErr) Error() string { return fmt.Sprintf("testErr(%v)", e.val) }
