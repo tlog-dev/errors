@@ -22,7 +22,7 @@ func TestErrors(tb *testing.T) {
 	if err1dup == nil {
 		tb.Errorf("error expected")
 	}
-	if err1dup == err1 { //nolint:errorlint
+	if err1dup == err1 {
 		tb.Errorf("expected to be a separate error")
 	}
 
@@ -44,7 +44,7 @@ func TestErrors(tb *testing.T) {
 		tb.Errorf("unexpected message: %v", msg)
 	}
 
-	if unerr := errors.Unwrap(err1w); unerr != err1 { //nolint:errorlint
+	if unerr := errors.Unwrap(err1w); unerr != err1 {
 		tb.Errorf("err1w unwrap expected to be err1")
 	}
 

@@ -1,12 +1,22 @@
 version: 2
 jobs:
-  go1.24: &base
+  go1.26: &base
     docker:
-      - image: cimg/go:1.24
+      - image: cimg/go:1.26
     steps:
       - run: go version
       - checkout
       - run: go test -race -v ./...
+
+  go1.25:
+    <<: *base
+    docker:
+      - image: cimg/go:1.25
+
+  go1.24:
+    <<: *base
+    docker:
+      - image: cimg/go:1.24
 
   go1.23:
     <<: *base
@@ -32,6 +42,8 @@ workflows:
   version: 2
   build:
     jobs:
+      - go1.26
+      - go1.25
       - go1.24
       - go1.23
       - go1.22
